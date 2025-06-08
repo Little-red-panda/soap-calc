@@ -9,6 +9,7 @@ export interface SelectedOil extends Oil {
 
 export const oils: Oil[] = [
   { name: 'Кокосовое масло', sap: 0.183 },
+  { name: 'Кукурузное масло', sap: 0.135 },
   { name: 'Пальмовое масло', sap: 0.142 },
   { name: 'Оливковое масло', sap: 0.134 },
   { name: 'Подсолнечное масло', sap: 0.134 },
