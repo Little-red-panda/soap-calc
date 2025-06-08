@@ -218,9 +218,6 @@ function App() {
   };
 
   const totalSuperfatPercentage = useMemo(() => {
-    // Если нет масел для пережира, возвращаем 0
-    if (currentState.superfatOils.length === 0) return 0;
-
     return Object.values(superfatPercentages).reduce((sum, val) => sum + val, 0);
   }, [superfatPercentages, currentState.superfatOils]);
 
@@ -251,6 +248,15 @@ function App() {
 
     setSuperfatPercentages(newPercentages);
   };
+
+  const superfatWeights = useMemo(() => {
+    const weights: {[key: string]: number} = {};
+    currentState.superfatOils.forEach(oil => {
+      const percentage = superfatPercentages[oil.name] || 0;
+      weights[oil.name] = superfatWeight * (percentage / 100);
+    });
+    return weights;
+  }, [superfatWeight, superfatPercentages, currentState.superfatOils]);
 
   return (
     <div style={{ 
@@ -790,6 +796,22 @@ function App() {
           }}>
             <div>
               <strong>Общий вес масел для пережира:</strong> {superfatWeight.toFixed(1)}г
+            </div>
+            <div style={{ marginTop: '10px' }}>
+              {currentState.superfatOils.map((oil, index) => (
+                <div key={index} style={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-between',
+                  marginBottom: '5px',
+                  fontSize: '14px'
+                }}>
+                  <span>{oil.name}:</span>
+                  <span>
+                    {superfatWeights[oil.name].toFixed(1)}г 
+                    ({superfatPercentages[oil.name].toFixed(1)}%)
+                  </span>
+                </div>
+              ))}
             </div>
             <div style={{ marginTop: '5px', color: '#666' }}>
               Сумма процентов: {totalSuperfatPercentage.toFixed(1)}%
