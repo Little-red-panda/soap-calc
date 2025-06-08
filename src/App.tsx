@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { oils, superfatOils, SelectedOil } from './types';
-
+import styles from './styles';
 type SoapMethod = 'cold' | 'hot';
 
 interface SoapState {
@@ -258,74 +258,57 @@ function App() {
     return weights;
   }, [superfatWeight, superfatPercentages, currentState.superfatOils]);
 
+  const { Container, HeaderContainer, HeaderInputsWrap, OilContainer } = styles;
+
   return (
-    <div style={{ 
-      maxWidth: '800px', 
-      margin: '40px auto', 
-      padding: '20px',
-      fontFamily: 'Arial, sans-serif'
-    }}>
+    <Container>
       <h1 style={{ textAlign: 'center', color: '#333' }}>Калькулятор SAP</h1>
-      
-      <div style={{ 
-        backgroundColor: '#f5f5f5',
-        padding: '20px',
-        borderRadius: '8px',
-        marginBottom: '20px'
-      }}>
+      <HeaderContainer>
         <div style={{ 
           display: 'flex',
-          justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: '20px'
+          marginBottom: '20px',
+          gap: '10px',
         }}>
-          <h3 style={{ margin: 0 }}>Добавить масло:</h3>
-          <div style={{ 
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-            backgroundColor: '#fff',
-            padding: '5px',
-            borderRadius: '4px',
-            border: '1px solid #ddd'
-          }}>
-            <button
-              onClick={() => {
-                setSoapMethod('cold');
-                setError(null);
-              }}
-              style={{
-                padding: '8px 16px',
-                backgroundColor: soapMethod === 'cold' ? '#2196F3' : '#e0e0e0',
-                color: soapMethod === 'cold' ? 'white' : '#333',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease'
-              }}
-            >
-              Холодный способ
-            </button>
-            <button
-              onClick={() => {
-                setSoapMethod('hot');
-                setError(null);
-              }}
-              style={{
-                padding: '8px 16px',
-                backgroundColor: soapMethod === 'hot' ? '#2196F3' : '#e0e0e0',
-                color: soapMethod === 'hot' ? 'white' : '#333',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease'
-              }}
-            >
-              Горячий способ
-            </button>
-          </div>
+          <button
+            onClick={() => {
+              setSoapMethod('cold');
+              setError(null);
+            }}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: soapMethod === 'cold' ? '#2196F3' : '#e0e0e0',
+              color: soapMethod === 'cold' ? 'white' : '#333',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease'
+            }}
+          >
+            Холодный способ
+          </button>
+          <button
+            onClick={() => {
+              setSoapMethod('hot');
+              setError(null);
+            }}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: soapMethod === 'hot' ? '#2196F3' : '#e0e0e0',
+              color: soapMethod === 'hot' ? 'white' : '#333',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease'
+            }}
+          >
+            Горячий способ
+          </button>
         </div>
-        <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+
+        <h3 style={{ marginBottom: '10px' }}>Добавить масло:</h3>
+
+        <HeaderInputsWrap>
           <select
             value={currentOil.name}
             onChange={(e) => {
@@ -339,7 +322,8 @@ function App() {
               flex: 2,
               padding: '8px',
               borderRadius: '4px',
-              border: '1px solid #ccc'
+              border: '1px solid #ccc',
+              maxWidth: '100%'
             }}
           >
             {oils.map((oil) => (
@@ -377,7 +361,7 @@ function App() {
           >
             Добавить
           </button>
-        </div>
+        </HeaderInputsWrap>
         {error && (
           <div style={{
             padding: '10px',
@@ -420,7 +404,7 @@ function App() {
             </span>
           </div>
         )}
-      </div>
+      </HeaderContainer>
 
       {currentState.selectedOils.length > 0 && (
         <div style={{ marginBottom: '20px' }}>
@@ -431,18 +415,15 @@ function App() {
             border: '1px solid #ddd'
           }}>
             {currentState.selectedOils.map((oil, index) => (
-              <div key={index} style={{
-                padding: '10px',
+              <OilContainer key={index} style={{
                 borderBottom: index < currentState.selectedOils.length - 1 ? '1px solid #ddd' : 'none',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
               }}>
                 <div style={{ flex: 1 }}>
                   <strong>{oil.name}</strong>
                   {editingIndex === index ? (
                     <div style={{ 
                       display: 'flex',
+                      flexWrap: 'wrap',
                       gap: '10px',
                       marginTop: '5px',
                       alignItems: 'center'
@@ -463,36 +444,40 @@ function App() {
                           border: '1px solid #ccc'
                         }}
                       />
-                      <button
-                        onClick={() => handleSaveWeight(index)}
-                        style={{
-                          padding: '4px 8px',
-                          backgroundColor: '#4CAF50',
-                          color: 'white',
-                          border: 'none',
-                          borderRadius: '4px',
-                          cursor: 'pointer'
-                        }}
-                      >
-                        Сохранить
-                      </button>
-                      <button
-                        onClick={() => setEditingIndex(null)}
-                        style={{
-                          padding: '4px 8px',
-                          backgroundColor: '#9e9e9e',
-                          color: 'white',
-                          border: 'none',
-                          borderRadius: '4px',
-                          cursor: 'pointer'
-                        }}
-                      >
-                        Отмена
-                      </button>
+                      <div>
+                        <button
+                          onClick={() => handleSaveWeight(index)}
+                          style={{
+                            padding: '4px 8px',
+                            backgroundColor: '#4CAF50',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            marginRight: '10px'
+                          }}
+                        >
+                          Сохранить
+                        </button>
+                        <button
+                          onClick={() => setEditingIndex(null)}
+                          style={{
+                            padding: '4px 8px',
+                            backgroundColor: '#9e9e9e',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          Отмена
+                        </button>
+                      </div>
                     </div>
                   ) : (
                     <div style={{ 
                       display: 'flex',
+                      flexWrap: 'wrap',
                       gap: '10px',
                       marginTop: '5px',
                       alignItems: 'center'
@@ -531,7 +516,7 @@ function App() {
                 >
                   Удалить
                 </button>
-              </div>
+              </OilContainer>
             ))}
           </div>
         </div>
@@ -643,7 +628,7 @@ function App() {
                 (добавляется на этапе загустения)
               </span>
             </div>
-            <div style={{ display: 'flex', gap: '10px' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
               <select
                 value={currentSuperfatOil.name}
                 onChange={(e) => {
@@ -657,7 +642,8 @@ function App() {
                   flex: 2,
                   padding: '8px',
                   borderRadius: '4px',
-                  border: '1px solid #ccc'
+                  border: '1px solid #ccc',
+                  maxWidth: '100%'
                 }}
               >
                 {superfatOils.map((oil) => (
@@ -701,12 +687,14 @@ function App() {
               {currentState.superfatOils.map((oil, index) => (
                 <div key={index} style={{
                   display: 'flex',
+                  flexWrap: 'wrap',
                   alignItems: 'center',
                   gap: '10px',
-                  padding: '10px',
+                  padding: '20px 10px 10px',
                   backgroundColor: 'white',
                   borderRadius: '6px',
-                  boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                  position: 'relative'
                 }}>
                   <span style={{
                     width: '150px',
@@ -769,12 +757,13 @@ function App() {
                   <button
                     onClick={() => handleRemoveSuperfatOil(index)}
                     style={{
-                      marginLeft: 'auto',
+                      position: 'absolute',
+                      right: '5px',
+                      top: '5px',
                       color: '#dc3545',
                       background: 'none',
                       border: 'none',
                       cursor: 'pointer',
-                      padding: '4px 8px',
                       borderRadius: '4px',
                       fontSize: '16px',
                       transition: 'background-color 0.2s'
@@ -819,7 +808,7 @@ function App() {
           </div>
         </>
       )}
-    </div>
+    </Container>
   );
 }
 
