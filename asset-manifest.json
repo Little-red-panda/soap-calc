@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/soap-calc/static/js/main.f18a4eee.js",
+    "main.js": "/soap-calc/static/js/main.e6cc97e3.js",
     "index.html": "/soap-calc/index.html",
-    "main.f18a4eee.js.map": "/soap-calc/static/js/main.f18a4eee.js.map"
+    "main.e6cc97e3.js.map": "/soap-calc/static/js/main.e6cc97e3.js.map"
   },
   "entrypoints": [
-    "static/js/main.f18a4eee.js"
+    "static/js/main.e6cc97e3.js"
   ]
 }
